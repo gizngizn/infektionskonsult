@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Header.module.css';
 import Search from './Search';
+import { Suspense } from "react"
 
 const Header = () => {
   return (
