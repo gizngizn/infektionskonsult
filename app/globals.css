@@ -44,6 +44,7 @@ a {
 
 #container {
   max-width: 900px;
-  padding: 60px 20px;
+  padding: 20px 20px;
   margin: auto;
+  background-color: azure;
 }
