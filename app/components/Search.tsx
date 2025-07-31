@@ -26,7 +26,6 @@ export default function Search({ placeholder }: { placeholder: string }) {
   return (
 
       <div className={styles.section}>
-          <form action="">
             <div className={styles.input}>
               <input 
                 type="text" 
@@ -38,7 +37,6 @@ export default function Search({ placeholder }: { placeholder: string }) {
               />
               <span>{placeholder}</span>
             </div>
-          </form>
       </div>
   );
 }
