@@ -6,7 +6,9 @@ const Header = () => {
   return (
     <header 
       className={styles.header}>
-      <Search placeholder = "Sök"/>
+      <Suspense> 
+        <Search placeholder = "Sök"/>
+      </Suspense> 
     </header>
   )
 }
