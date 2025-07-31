@@ -33,6 +33,12 @@ export default function Search({ placeholder }: { placeholder: string }) {
                 onChange={(e) => {
                   handleSearch(e.target.value);
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();             // hindra eventuell submit
+                    (e.currentTarget as HTMLInputElement).blur(); // tappar fokus
+                }
+                }}
                 defaultValue={searchParams.get('query')?.toString()}
               />
               <span>{placeholder}</span>
