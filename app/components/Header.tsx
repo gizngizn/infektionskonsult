@@ -8,7 +8,7 @@ const Header = () => {
     <header 
       className={styles.header}>
       <Suspense> 
-        <Search placeholder = "Sök"/>
+        <Search placeholder = "Sök bakterie..."/>
       </Suspense> 
     </header>
   )

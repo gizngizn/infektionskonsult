@@ -24,15 +24,22 @@ export default function Search({ placeholder }: { placeholder: string }) {
   }, 300);
 
   return (
-      <div className={styles.search}>
-        <input
-          className={styles.searchbox}
-          placeholder={placeholder}
-          onChange={(e) => {
-            handleSearch(e.target.value);
-          }}
-          defaultValue={searchParams.get('query')?.toString()}
-      />
-      </div>
+
+      <section className={styles.section}>
+          <form action="">
+            <div className={styles.input}>
+              <input 
+                type="text" 
+                required placeholder=" "
+                onChange={(e) => {
+                  handleSearch(e.target.value);
+                }}
+                defaultValue={searchParams.get('query')?.toString()}
+              />
+              <span>{placeholder}</span>
+            </div>
+          </form>
+      </section>
   );
 }
+
