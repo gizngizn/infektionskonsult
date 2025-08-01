@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import styles from './MoList.module.css';
 
 interface Mo {
   mo: string;
@@ -50,11 +51,13 @@ const MoList = () => {
 
   return (
     <>
+        <div className={styles.molist}>
         <ul>
             {filteredMos.map(mo => (
                 <li key={mo.mo}>{mo.fullname}</li>
             ))}
         </ul>
+        </div>
     </>
   );
 };
