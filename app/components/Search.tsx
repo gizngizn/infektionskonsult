@@ -42,6 +42,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
                 defaultValue={searchParams.get('query')?.toString()}
               />
               <span>{placeholder}</span>
+              <button>🦠</button>
             </div>
       </div>
   );
