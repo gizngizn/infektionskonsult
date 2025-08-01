@@ -1,19 +1,23 @@
 // app/mo/[mo]/page.tsx
 import microorganisms from "@/data/microorganisms.json";
 import { notFound } from "next/navigation";
-import type { Metadata, PageProps } from "next";   // ← NEW
+import type { Metadata } from "next";
 
-type Props = PageProps<{ mo: string }>;
+/** Narrow helper for this route */
+interface Params {
+  mo: string;
+}
+
 type Microorganism = (typeof microorganisms)[number];
 
-/* ---------- Static params ---------- */
+/* ----------  static params  ---------- */
 export function generateStaticParams() {
   return microorganisms.map(({ mo }) => ({ mo }));
 }
 
-/* ---------- Metadata ---------- */
+/* ----------  metadata  ---------- */
 export async function generateMetadata(
-  { params }: Props                // ← USE Props
+  { params }: { params: Params }
 ): Promise<Metadata> {
   const micro = microorganisms.find((m) => m.mo === params.mo);
   if (!micro) return { title: "Not found" };
@@ -24,11 +28,11 @@ export async function generateMetadata(
   };
 }
 
-/* ---------- Page ---------- */
-export default function MicroorganismPage({ params }: Props) {
-  const micro = microorganisms.find((m) => m.mo === params.mo) as
-    | Microorganism
-    | undefined;
+/* ----------  page  ---------- */
+export default function MicroorganismPage(
+  { params }: { params: Params }
+) {
+  const micro = microorganisms.find((m) => m.mo === params.mo);
 
   if (!micro) notFound();
 
