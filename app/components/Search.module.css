@@ -40,7 +40,7 @@
     border: none;
     background: none;
     font-size: 2rem;
-    color: rgba(39, 40, 41, 0.6);
+    color: #494949;
     cursor: pointer;
     transition: all 0.4s ease;
 }
