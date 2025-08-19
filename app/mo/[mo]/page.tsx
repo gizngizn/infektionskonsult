@@ -49,7 +49,6 @@ export default async function MoPage(
     <article className="prose max-w-none">
       <h1>{item.fullname}</h1>
       <ul>
-        <li><b>MO ID:</b> {item.mo}</li>
         <li><b>Rank:</b> {item.rank}</li>
         <li><b>Kingdom:</b> {item.kingdom}</li>
         <li><b>Phylum:</b> {item.phylum}</li>
