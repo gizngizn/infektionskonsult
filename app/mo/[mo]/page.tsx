@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-// Enable `"resolveJsonModule": true` in tsconfig.json
-import microorganismsData from "@/data/microorganisms.json";
+import { headers } from "next/headers";
+
+// Small index (safe to import)
+import slugs from "@/../public/micro/_slugs.json"; // array of strings
 
 type Mo = {
   mo: string;
@@ -19,22 +21,31 @@ type Mo = {
   [k: string]: unknown;
 };
 
-const microorganisms = microorganismsData as Mo[];
-
-// Pre-generate /mo/[mo] for every entry
 export async function generateStaticParams() {
-  return microorganisms.map((item) => ({ mo: item.mo }));
+  // If you want to limit prerendering, slice here:
+  // return (slugs as string[]).slice(0, 2000).map(mo => ({ mo }));
+  return (slugs as string[]).map((mo) => ({ mo }));
 }
 
-// Unknown slugs => 404
-export const dynamicParams = false;
+export const dynamicParams = false; // 404 for unknown slugs
+export const revalidate = false;    // files in /public are immutable
 
-// Next 15: params is a Promise
+async function fetchOne(mo: string): Promise<Mo | null> {
+  // Build absolute URL to our own static file
+  const h = headers();
+  const host = h.get("host");
+  const protocol = process.env.VERCEL ? "https" : "http";
+  const url = `${protocol}://${host}/micro/${mo}.json`;
+  const res = await fetch(url, { cache: "force-cache" });
+  if (!res.ok) return null;
+  return (await res.json()) as Mo;
+}
+
 export async function generateMetadata(
   { params }: { params: Promise<{ mo: string }> }
 ): Promise<Metadata> {
   const { mo } = await params;
-  const item = microorganisms.find((m) => m.mo === mo);
+  const item = await fetchOne(mo);
   return { title: item ? item.fullname : "Microorganism not found" };
 }
 
@@ -42,13 +53,14 @@ export default async function MoPage(
   { params }: { params: Promise<{ mo: string }> }
 ) {
   const { mo } = await params;
-  const item = microorganisms.find((m) => m.mo === mo);
+  const item = await fetchOne(mo);
   if (!item) notFound();
 
   return (
     <article className="prose max-w-none">
       <h1>{item.fullname}</h1>
       <ul>
+        <li><b>MO ID:</b> {item.mo}</li>
         <li><b>Rank:</b> {item.rank}</li>
         <li><b>Kingdom:</b> {item.kingdom}</li>
         <li><b>Phylum:</b> {item.phylum}</li>
