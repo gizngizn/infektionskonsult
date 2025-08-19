@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-// If TS complains, enable `"resolveJsonModule": true` in tsconfig
-import microorganisms from "@/data/microorganisms.json";
+// Enable `"resolveJsonModule": true` in tsconfig.json
+import microorganismsData from "@/data/microorganisms.json";
 
 type Mo = {
   mo: string;
@@ -16,28 +16,33 @@ type Mo = {
   rank: string;
   ref?: string;
   source?: string;
-  [k: string]: unknown; // allow extras
+  [k: string]: unknown;
 };
+
+const microorganisms = microorganismsData as Mo[];
 
 // Pre-generate /mo/[mo] for every entry
 export async function generateStaticParams() {
-  return (microorganisms as Mo[]).map((item) => ({ mo: item.mo }));
+  return microorganisms.map((item) => ({ mo: item.mo }));
 }
 
-// Only allow known params; unknown slugs => 404
+// Unknown slugs => 404
 export const dynamicParams = false;
 
-export function generateMetadata(
-  { params }: { params: { mo: string } }
-): Metadata {
-  const item = (microorganisms as Mo[]).find((m) => m.mo === params.mo);
-  return {
-    title: item ? item.fullname : "Microorganism not found",
-  };
+// Next 15: params is a Promise
+export async function generateMetadata(
+  { params }: { params: Promise<{ mo: string }> }
+): Promise<Metadata> {
+  const { mo } = await params;
+  const item = microorganisms.find((m) => m.mo === mo);
+  return { title: item ? item.fullname : "Microorganism not found" };
 }
 
-export default function MoPage({ params }: { params: { mo: string } }) {
-  const item = (microorganisms as Mo[]).find((m) => m.mo === params.mo);
+export default async function MoPage(
+  { params }: { params: Promise<{ mo: string }> }
+) {
+  const { mo } = await params;
+  const item = microorganisms.find((m) => m.mo === mo);
   if (!item) notFound();
 
   return (
