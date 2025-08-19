@@ -51,13 +51,19 @@ const MoList = () => {
 
   return (
     <>
-        <div className={styles.molist}>
+  <div className={styles.molist}>
+    {query.length >= 3 ? (
+      filteredMos.length === 0 ? (
+        <p>Inga bakterier</p>
+      ) : (
         <ul>
-            {filteredMos.map(mo => (
-                <li key={mo.mo}>{mo.fullname}</li>
-            ))}
+          {filteredMos.map((mo) => (
+            <li key={mo.mo}>{mo.fullname}</li>
+          ))}
         </ul>
-        </div>
+      )
+    ) : null}
+  </div>
     </>
   );
 };
